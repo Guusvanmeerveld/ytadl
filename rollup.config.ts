@@ -9,12 +9,52 @@ import { terser } from 'rollup-plugin-terser';
 
 const dev = process.env.ROLLUP_WATCH === 'true';
 
-export default {
-	input: 'src/index.ts',
-	output: {
-		dir: 'dist',
-		format: 'cjs',
+import pkg from './package.json';
+
+const plugins = [dev && run(), json(), typescript(), tsConfigPaths(), terser()];
+
+const entry = 'src/index.ts';
+
+const external = [
+	...Object.keys(pkg.dependencies || {}),
+	...Object.keys(pkg.devDependencies || {}),
+];
+
+const banner = `
+  /**
+   * @license
+   * author: ${pkg.author.name}
+   * ${pkg.name}.js v${pkg.version}
+   * Released under the ${pkg.license} license.
+   */
+`;
+
+/**
+ * @type {import('rollup').RollupOptions}
+ */
+export default [
+	{
+		input: entry,
+		output: {
+			file: pkg.main,
+			format: 'cjs',
+			sourcemap: 'inline',
+			banner,
+			exports: 'default',
+		},
+		external,
+		plugins,
 	},
-	external: [],
-	plugins: [dev && run(), json(), typescript(), tsConfigPaths(), terser()],
-};
+	{
+		input: entry,
+		output: {
+			file: pkg.module,
+			format: 'es',
+			sourcemap: 'inline',
+			banner,
+			exports: 'default',
+		},
+		external,
+		plugins,
+	},
+];

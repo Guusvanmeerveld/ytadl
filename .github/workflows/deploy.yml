@@ -11,13 +11,21 @@ jobs:
     steps:
       - name: Setup Checkout
         uses: actions/checkout@v2
+
       - name: Setup NodeJS v12
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 12
+
       - name: Install Dependencies
         run: yarn install
-      - name: Test Build
+
+      - name: Build package
         run: yarn build
+
       - name: ESlint check
         run: yarn lint
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

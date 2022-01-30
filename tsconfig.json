@@ -7,9 +7,13 @@
 		"resolveJsonModule": true,
 		"outDir": "dist",
 		"baseUrl": "src",
-		"paths": {},
+		"declaration": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true
+	},
+	"include": ["src/**/*"],
+	"ts-node": {
+		"compilerOptions": { "module": "CommonJS" }
 	}
 }
