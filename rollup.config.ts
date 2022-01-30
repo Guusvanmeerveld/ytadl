@@ -3,7 +3,6 @@ import run from '@rollup/plugin-run';
 import json from '@rollup/plugin-json';
 
 import typescript from 'rollup-plugin-typescript2';
-import tsConfigPaths from 'rollup-plugin-ts-paths';
 
 import { terser } from 'rollup-plugin-terser';
 
@@ -11,20 +10,21 @@ const dev = process.env.ROLLUP_WATCH === 'true';
 
 import pkg from './package.json';
 
-const plugins = [dev && run(), json(), typescript(), tsConfigPaths(), terser()];
+const plugins = [dev && run(), json(), typescript(), terser()];
 
 const entry = 'src/index.ts';
 
 const external = [
 	...Object.keys(pkg.dependencies || {}),
 	...Object.keys(pkg.devDependencies || {}),
+	'events',
 ];
 
 const banner = `
   /**
    * @license
    * author: ${pkg.author.name}
-   * ${pkg.name}.js v${pkg.version}
+   * ${pkg.name} v${pkg.version}
    * Released under the ${pkg.license} license.
    */
 `;

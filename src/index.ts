@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import ConfigSchema from './config';
 
-export default class Listener extends EventEmitter {
+export default class ytadl extends EventEmitter {
 	constructor(private config: z.infer<typeof ConfigSchema>) {
 		super();
 
