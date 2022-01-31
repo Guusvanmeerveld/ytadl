@@ -9,7 +9,7 @@
 	"module": "dist/index.es.js",
 	"main": "dist/index.cjs.js",
 	"types": "dist/index.d.ts",
-	"description": "A simple package to listen for new uploads and download them automatically",
+	"description": "A simple package to listen for new uploads on Youtube and stream them automatically",
 	"repository": {
 		"type": "github",
 		"url": "https://github.com/Guusvanmeerveld/ytadl"
