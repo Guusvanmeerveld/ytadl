@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test fetching Youtube videos It throws an error because the channel id can't be found 1`] = `[Error: Could not a find channel with the id 'This channel id does not exist']`;
+
+exports[`Test fetching Youtube videos It throws an error because the channel name can't be found 1`] = `[Error: Could not a find channel with the name 'This channel does not exist']`;

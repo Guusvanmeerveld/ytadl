@@ -8,7 +8,13 @@ import { Entry, YoutubeFeed } from './interfaces/youtube';
 import { FeedItem } from './interfaces/feed';
 
 export const findChannelIdByName = async (name: string): Promise<string | void> => {
-	const { data } = await axios.get<string>(`https://youtube.com/c/${name}`);
+	const { data, status } = await axios.get(`https://youtube.com/c/${name}`, {
+		validateStatus: (status) => [200, 404].includes(status),
+	});
+
+	if (status == 404) {
+		throw new Error(`Could not a find channel with the name '${name}'`);
+	}
 
 	const match =
 		data.match(/"externalId":"([\w-]+)"/) || data.match(/channel-external-id="([\w-]+)"/);
@@ -19,11 +25,16 @@ export const findChannelIdByName = async (name: string): Promise<string | void> 
 };
 
 export const fetchFeedById = async (channelId: string): Promise<FeedItem[]> => {
-	const { data } = await axios.get('https://www.youtube.com/feeds/videos.xml', {
+	const { data, status } = await axios.get('https://www.youtube.com/feeds/videos.xml', {
 		params: {
 			channel_id: channelId,
 		},
+		validateStatus: (status) => [200, 404].includes(status),
 	});
+
+	if (status == 404) {
+		throw new Error(`Could not a find channel with the id '${channelId}'`);
+	}
 
 	const json: YoutubeFeed = await parseStringPromise(data);
 

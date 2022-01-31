@@ -14,8 +14,7 @@
 		// "indent": ["error", "tab"],
 		"prettier/prettier": "error",
 		"linebreak-style": ["error", "unix"],
-		"no-case-declarations": 0,
-		"quotes": ["error", "single"]
+		"no-case-declarations": 0
 		// "semi": ["error", "always"]
 	}
 }

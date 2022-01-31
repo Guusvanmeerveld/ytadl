@@ -10,6 +10,20 @@ describe('Test fetching Youtube videos', () => {
 		expect(actual).toBe(exampleChannelId);
 	});
 
+	test("It throws an error because the channel name can't be found", async () => {
+		expect.assertions(1);
+		return findChannelIdByName('This channel does not exist').catch((e) =>
+			expect(e).toMatchSnapshot()
+		);
+	});
+
+	test("It throws an error because the channel id can't be found", async () => {
+		expect.assertions(1);
+		return fetchFeedById('This channel id does not exist').catch((e) =>
+			expect(e).toMatchSnapshot()
+		);
+	});
+
 	test('It returns a list of Youtube videos', async () => {
 		const actual = await fetchFeedById(exampleChannelId);
 
