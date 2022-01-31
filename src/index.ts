@@ -11,19 +11,18 @@ import { fetchFeedById, findChannelIdByName } from './youtube';
 import TypedEmitter from './interfaces/emitter';
 import { FeedItem } from './interfaces/feed';
 
-type ConfigItem = z.infer<typeof configItem>;
+type ConfigItem = z.output<typeof configItem>;
 
 type EmitMap = {
 	newItem: (item: FeedItem) => void;
 	jobRan: (config: ConfigItem) => void;
 };
 
-const DEFAULT_CRON = '0 * * * *';
-
 export default class ytadl extends (EventEmitter as new () => TypedEmitter<EmitMap>) {
 	private data: Record<string, string[]> = {};
+	private config: z.output<typeof ConfigSchema>;
 
-	constructor(private config: z.infer<typeof ConfigSchema>) {
+	constructor(config: z.input<typeof ConfigSchema>) {
 		super();
 
 		this.config = ConfigSchema.parse(config);
@@ -50,7 +49,7 @@ export default class ytadl extends (EventEmitter as new () => TypedEmitter<EmitM
 		);
 
 		for (const item of this.config) {
-			const job = schedule.scheduleJob(item.cron ?? DEFAULT_CRON, async () => {
+			const job = schedule.scheduleJob(item.cron, async () => {
 				if (!item.id) return;
 
 				const [ids, feed] = await this.fetch(item);
@@ -58,9 +57,9 @@ export default class ytadl extends (EventEmitter as new () => TypedEmitter<EmitM
 				const difference = this.data[item.id].filter((i) => !ids.includes(i));
 
 				if (difference.length > 0) {
-					difference.forEach((feedItem) => {
-						this.emit('newItem', feed.find(({ id }) => id == feedItem) as FeedItem);
-					});
+					difference.forEach((feedItem) =>
+						this.emit('newItem', feed.find(({ id }) => id == feedItem) as FeedItem)
+					);
 				}
 			});
 

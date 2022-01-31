@@ -11,5 +11,5 @@ export interface FeedItem {
 	channel: string;
 	url: string;
 	id: string;
-	stream: (options?: z.infer<typeof streamOptions>) => Promise<Stream>;
+	stream: (options?: z.input<typeof streamOptions>) => Promise<Stream>;
 }

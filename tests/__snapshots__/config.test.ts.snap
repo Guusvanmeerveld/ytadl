@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validate config It is valid 1`] = `
+Array [
+  Object {
+    "cron": "0 * * * *",
+    "name": "Monstercat",
+    "platform": "youtube",
+  },
+]
+`;

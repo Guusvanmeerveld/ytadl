@@ -1,6 +1,8 @@
 import axios from 'axios';
-import ytdl from 'ytdl-core';
+import ytdl, { Filter } from 'ytdl-core';
 import { parseStringPromise } from 'xml2js';
+
+import { streamOptions } from './config';
 
 import { Entry, YoutubeFeed } from './interfaces/youtube';
 import { FeedItem } from './interfaces/feed';
@@ -39,6 +41,22 @@ const YtItemtoFeedItem = (item: Entry): FeedItem => {
 		id: item['yt:videoId'][0],
 		title: item.title[0],
 		url,
-		stream: async (options) => ytdl(url, {}),
+		stream: async (options) => {
+			const parsed = streamOptions.parse(options);
+
+			let filter: Filter = 'audioandvideo';
+
+			if (!(parsed?.audio?.included && parsed?.video?.included)) {
+				if (parsed?.audio?.included) {
+					filter = 'audioonly';
+				}
+
+				if (parsed?.video?.included) {
+					filter = 'videoonly';
+				}
+			}
+
+			return ytdl(url, { filter });
+		},
 	};
 };
