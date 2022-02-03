@@ -4,35 +4,34 @@ import { z } from 'zod';
 
 import schedule from 'node-schedule';
 
-import ConfigSchema, { configItem } from './config';
+import ConfigSchema from './config';
 
 import { fetchFeedById, findChannelIdByName } from './youtube';
 
-import TypedEmitter from './interfaces/emitter';
+import Emitter from './interfaces/emitter';
 import { FeedItem } from './interfaces/feed';
+import { Config, ConfigItem } from './interfaces/config';
 
-type ConfigItem = z.output<typeof configItem>;
-
-type EmitMap = {
-	newItem: (item: FeedItem) => void;
-	jobRan: (config: ConfigItem) => void;
-};
-
-export default class ytadl extends (EventEmitter as new () => TypedEmitter<EmitMap>) {
+export default class ytadl extends (EventEmitter as Emitter) {
 	private data: Record<string, string[]> = {};
-	private config: z.output<typeof ConfigSchema>;
+	private schema: z.output<typeof ConfigSchema>;
 
-	constructor(config: z.input<typeof ConfigSchema>) {
+	/**
+	 * Creates a new ytadl listener
+	 * @param schema The input schema, an array of objects with each a name property with the channel name to listen for.
+	 * @param config An optional config containing tokens or general settings
+	 */
+	constructor(schema: z.input<typeof ConfigSchema>, private config?: Config) {
 		super();
 
-		this.config = ConfigSchema.parse(config);
+		this.schema = ConfigSchema.parse(schema);
 
 		this.init();
 	}
 
 	private init = async () => {
-		this.config = await Promise.all(
-			this.config.map(async (item) => {
+		this.schema = await Promise.all(
+			this.schema.map(async (item) => {
 				if (item.id || !item.name) return item;
 
 				switch (item.platform) {
@@ -48,7 +47,7 @@ export default class ytadl extends (EventEmitter as new () => TypedEmitter<EmitM
 			})
 		);
 
-		for (const item of this.config) {
+		for (const item of this.schema) {
 			const job = schedule.scheduleJob(item.cron, async () => {
 				if (!item.id) return;
 
@@ -58,7 +57,7 @@ export default class ytadl extends (EventEmitter as new () => TypedEmitter<EmitM
 
 				if (difference.length > 0) {
 					difference.forEach((feedItem) =>
-						this.emit('newItem', feed.find(({ id }) => id == feedItem) as FeedItem)
+						this.emit('newItem', feed.find(({ id }) => id == feedItem) as FeedItem, item)
 					);
 				}
 			});

@@ -1,3 +1,6 @@
+import { ConfigItem } from './config';
+import { FeedItem } from './feed';
+
 export type EventMap = {
 	[key: string]: (...args: any[]) => void;
 };
@@ -24,4 +27,11 @@ interface TypedEmitter<Events extends EventMap> {
 	setMaxListeners(maxListeners: number): this;
 }
 
-export default TypedEmitter;
+type EmitMap = {
+	newItem: (item: FeedItem, config: ConfigItem) => void;
+	jobRan: (config: ConfigItem) => void;
+};
+
+type Emitter = new () => TypedEmitter<EmitMap>;
+
+export default Emitter;

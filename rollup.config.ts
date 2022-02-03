@@ -29,32 +29,38 @@ const banner = `
    */
 `;
 
+const options = {
+	external,
+	plugins,
+};
+
+const outputOptions = {
+	exports: 'default',
+	validate: true,
+	sourcemap: true,
+	banner,
+};
+
 /**
  * @type {import('rollup').RollupOptions}
  */
 export default [
 	{
+		...options,
 		input: entry,
 		output: {
+			...outputOptions,
 			file: pkg.main,
 			format: 'cjs',
-			sourcemap: 'inline',
-			banner,
-			exports: 'default',
 		},
-		external,
-		plugins,
 	},
 	{
+		...options,
 		input: entry,
 		output: {
+			...outputOptions,
 			file: pkg.module,
 			format: 'es',
-			sourcemap: 'inline',
-			banner,
-			exports: 'default',
 		},
-		external,
-		plugins,
 	},
 ];
