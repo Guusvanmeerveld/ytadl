@@ -28,8 +28,8 @@ interface TypedEmitter<Events extends EventMap> {
 }
 
 type EmitMap = {
-	newItem: (item: FeedItem, config: ConfigItem) => void;
-	jobRan: (config: ConfigItem) => void;
+	newItem: (item: FeedItem, schema: ConfigItem) => void;
+	jobRan: (schema: ConfigItem) => void;
 };
 
 type Emitter = new () => TypedEmitter<EmitMap>;

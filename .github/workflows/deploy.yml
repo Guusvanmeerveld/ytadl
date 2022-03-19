@@ -1,4 +1,4 @@
-name: Publish package to NPM
+name: Publish base package to NPM
 
 on:
   release:
@@ -21,9 +21,9 @@ jobs:
         run: yarn install
 
       - name: Build package
-        run: yarn build
+        run: yarn build:base
 
       - name: Publish package
-        run: yarn publish
+        run: yarn --cwd packages/base publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -21,10 +21,10 @@ jobs:
         run: yarn install
 
       - name: Build package
-        run: yarn build
+        run: yarn build:base
 
       - name: Check ESlint
-        run: yarn lint
+        run: yarn lint:base
 
       - name: Run tests
-        run: yarn test
+        run: yarn test:base

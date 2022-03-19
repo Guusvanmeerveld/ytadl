@@ -1,55 +1,12 @@
 {
-	"name": "ytadl",
-	"displayName": "Youtube-Auto-Downloader",
-	"license": "MIT",
-	"version": "0.2.1",
-	"author": {
-		"name": "Guus van Meerveld"
-	},
-	"module": "dist/index.es.js",
-	"main": "dist/index.cjs.js",
-	"types": "dist/index.d.ts",
-	"description": "A simple package to listen for new uploads on Youtube and stream them automatically",
-	"repository": {
-		"type": "github",
-		"url": "https://github.com/Guusvanmeerveld/ytadl"
-	},
+	"private": "true",
+	"workspaces": [
+		"packages/base"
+	],
 	"scripts": {
-		"build": "rollup -c",
-		"test": "jest",
-		"pretify": "prettier --write .",
-		"lint": "eslint src",
-		"docs": "typedoc --entryPointStrategy expand src/index.ts"
-	},
-	"dependencies": {
-		"axios": "^0.25.0",
-		"node-schedule": "^2.1.0",
-		"xml2js": "^0.4.23",
-		"ytdl-core": "^4.10.1",
-		"zod": "^3.11.6"
-	},
-	"devDependencies": {
-		"@rollup/plugin-json": "^4.1.0",
-		"@rollup/plugin-run": "^2.1.0",
-		"@types/jest": "^27.4.0",
-		"@types/node": "^15.0.2",
-		"@types/node-schedule": "^1.3.2",
-		"@types/xml2js": "^0.4.9",
-		"@typescript-eslint/eslint-plugin": "^4.22.1",
-		"@typescript-eslint/parser": "^4.22.0",
-		"eslint": "^7.25.0",
-		"eslint-plugin-prettier": "^3.4.0",
-		"jest": "^27.4.7",
-		"prettier": "2.2.1",
-		"rollup": "^2.56.3",
-		"rollup-plugin-terser": "^7.0.2",
-		"rollup-plugin-typescript2": "^0.31.1",
-		"ts-jest": "^27.1.3",
-		"typedoc": "^0.22.11",
-		"typescript": "^4.5.5"
-	},
-	"jest": {
-		"preset": "ts-jest",
-		"testEnvironment": "node"
+		"build:base": "yarn --cwd packages/base build",
+		"test:base": "yarn --cwd packages/base test",
+		"lint:base": "yarn --cwd packages/base lint",
+		"build:docs": "typedoc --entryPointStrategy expand packages/base/src/index.ts --tsconfig packages/base/tsconfig.json"
 	}
 }

@@ -55,6 +55,8 @@ export default class ytadl extends (EventEmitter as Emitter) {
 
 				const difference = this.data[item.id].filter((i) => !ids.includes(i));
 
+				this.data[item.id] = ids;
+
 				if (difference.length > 0) {
 					difference.forEach((feedItem) =>
 						this.emit('newItem', feed.find(({ id }) => id == feedItem) as FeedItem, item)
