@@ -1,7 +1,8 @@
 {
 	"private": "true",
 	"workspaces": [
-		"packages/base"
+		"packages/base",
+		"packages/daemon"
 	],
 	"scripts": {
 		"build:base": "yarn --cwd packages/base build",

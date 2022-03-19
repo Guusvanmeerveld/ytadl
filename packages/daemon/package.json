@@ -1,0 +1,24 @@
+{
+	"name": "ytadl-daemon",
+	"displayName": "Youtube-Auto-Downloader Daemon",
+	"version": "0.0.1",
+	"description": "A simple daemon to automatically download new Youtube video's",
+	"main": "dist/index.js",
+	"license": "MIT",
+	"scripts": {
+		"build": "rollup -c",
+		"dev": "tsnd --respawn -T --cls -r tsconfig-paths/register src",
+		"start": "node . --production"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "^17.0.21",
+		"rollup": "^2.70.1",
+		"rollup-plugin-terser": "^7.0.2",
+		"rollup-plugin-ts-paths": "^1.0.5",
+		"rollup-plugin-typescript2": "^0.31.2",
+		"ts-node-dev": "^1.1.8",
+		"tsconfig-paths": "^3.14.0",
+		"typescript": "^4.6.2"
+	}
+}

@@ -4,5 +4,6 @@ yarn-error.lock
 yarn-error.log
 
 lib
+dist
 
 docs
